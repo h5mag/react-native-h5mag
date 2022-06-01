@@ -25,7 +25,7 @@ React-native-h5mag supports both iOS and Android and has been tested on the foll
 ## **Installation**
 You need NPM to install the H5mag framework. For installation use this command:
 
-`npm install react-native-h5mag`
+`npm i @h5mag/react-native-h5mag`
 
 ## **Usage**
 In order to use the API, you will need to set the API key first. Here is an example:
