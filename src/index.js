@@ -84,10 +84,6 @@ class H5magAPI {
 
 			// get a list of files and directories in the main bundle
 			RNFS.readDir(targetPath).then((result) => {
-				result.forEach((element) => {
-					console.log(Platform.OS + ' ' + element.name, element.size);
-				});
-
 				if (result.length > 0) {
 					resolve('downloaded');
 				} else {
@@ -109,20 +105,17 @@ class H5magAPI {
 								console.log(Platform.OS + ' unzip completed at ', zippath);
 								resolve('downloaded');
 							}).catch((err) => {
-								reject(err);
-								console.log(Platform.OS + ' ZIP ERROR: ', err);
+								reject(Platform.OS + ' ZIP ERROR: ' +  err);
 							});
 						}).catch((err) => {
-							reject(err);
-							console.log(Platform.OS + ' FB ERROR', err);
+							reject(Platform.OS + ' FB ERROR: ' + err);
 						});
 					} catch (err) {
 						reject(err);
 					}
 				}
 			}).catch((err) => {
-				reject(err.message, err.code);
-				console.log(Platform.OS + ' ERROR:', err.message, err.code);
+				reject(Platform.OS + ' ERROR: ' + err.message);
 			});
 		})
 	};
@@ -137,7 +130,6 @@ class H5magAPI {
 			RNFS.exists(targetPath).then((exists) => {
 				if (exists) {
 					RNFS.unlink(targetPath).then(() => {
-						console.log('Edition has been deleted');
 						resolve("deleted");
 					}).catch((err) => {
 						reject(err);
@@ -158,8 +150,6 @@ class H5magAPI {
 	 */
 	readEditionOffline(osPath, targetPath, port) {
 		return new Promise((resolve, reject) => {
-			// RNFS.mkdir(targetPath);
-
 			let server = new StaticServer(port, osPath, { keepAlive: true, localOnly: true });
 
 			// Start the server
@@ -169,21 +159,16 @@ class H5magAPI {
 
 				// get a list of files and directories in the main bundle
 				RNFS.readDir(targetPath).then(result => {
-					result.forEach(element => {
-						console.log(Platform.OS + ' ' + element.name, element.size);
-					});
-
 					if (result.length > 0) {
 						resolve('success');
 					} else {
 						reject('Error: edition files not found');
 					}
 				}).catch(err => {
-					console.log(Platform.OS + ' ERROR:', err.message, err.code);
-					reject(err.message);
+					reject(Platform.OS + ' ERROR: ' + err.message);
 				});
 			}).catch(err => {
-				reject(err.message);
+				reject(Platform.OS + ' ERROR: ' + err.message);
 			});
 		});
 	}
